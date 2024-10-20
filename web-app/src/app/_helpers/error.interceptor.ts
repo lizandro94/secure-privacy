@@ -9,7 +9,6 @@ export function errorInterceptor(
   request: HttpRequest<any>,
   next: HttpHandlerFn
 ): Observable<HttpEvent<unknown>> {
-  console.log('test22');
   const accountService = inject(AccountService);
   return next(request).pipe(
     catchError((err) => {

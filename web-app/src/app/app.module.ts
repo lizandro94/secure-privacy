@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home';
 import { LoginComponent, RegisterComponent } from './account';
+import { AlertComponent } from './_components';
 
 @NgModule({
   imports: [BrowserModule, ReactiveFormsModule, CommonModule],
@@ -14,6 +15,7 @@ import { LoginComponent, RegisterComponent } from './account';
     HomeComponent,
     LoginComponent,
     RegisterComponent,
+    AlertComponent,
   ],
   bootstrap: [AppComponent],
 })

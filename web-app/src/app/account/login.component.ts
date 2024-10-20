@@ -5,7 +5,7 @@ import { first } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { AccountService } from '@app/_services';
+import { AccountService, AlertService } from '@app/_services';
 
 @Component({
   standalone: true,
@@ -16,14 +16,13 @@ export class LoginComponent implements OnInit {
   form!: FormGroup;
   loading = false;
   submitted = false;
-  error?: string;
-  success?: string;
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private alertService: AlertService
   ) {
     // redirect to home if already logged in
     if (this.accountService.userValue) {
@@ -36,11 +35,6 @@ export class LoginComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required],
     });
-
-    // show success message after registration
-    if (this.route.snapshot.queryParams.registered) {
-      this.success = 'Registration successful';
-    }
   }
 
   // convenience getter for easy access to form fields
@@ -52,8 +46,7 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
 
     // reset alert on submit
-    this.error = '';
-    this.success = '';
+    this.alertService.clear();
 
     // stop here if form is invalid
     if (this.form.invalid) {
@@ -71,7 +64,7 @@ export class LoginComponent implements OnInit {
           this.router.navigateByUrl(returnUrl);
         },
         error: (error) => {
-          this.error = error;
+          this.alertService.error(error);
           this.loading = false;
         },
       });

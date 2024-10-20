@@ -9,7 +9,6 @@ export function jwtInterceptor(
   request: HttpRequest<any>,
   next: HttpHandlerFn
 ): Observable<HttpEvent<unknown>> {
-  console.log('jwt token');
   const accountService = inject(AccountService);
   const user = accountService.userValue;
   const isLoggedIn = user?.token;
