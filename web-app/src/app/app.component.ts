@@ -1,13 +1,24 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { NgIf } from '@angular/common';
+
+import { AccountService } from './_services';
+import { User } from './_models';
 
 @Component({
-  selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  selector: 'app-root',
+  templateUrl: 'app.component.html',
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, NgIf],
 })
 export class AppComponent {
-  title = 'web-app';
+  user?: User | null;
+
+  constructor(private accountService: AccountService) {
+    this.accountService.user.subscribe((x) => (this.user = x));
+  }
+
+  logout() {
+    this.accountService.logout();
+  }
 }

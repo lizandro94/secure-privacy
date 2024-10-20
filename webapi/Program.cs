@@ -6,11 +6,20 @@ using webapi.Database;
 using webapi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddSingleton<IDatabaseSettings>(db => db.GetRequiredService<IOptions<DatabaseSettings>>().Value);
 builder.Services.AddScoped<UserService>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
+                      });
+});
 
 builder.Services.AddAuthentication(x =>
 {
@@ -43,7 +52,7 @@ app.MapControllers();
 app.UseHttpsRedirection();
 
 app.UseRouting();
-
+app.UseCors(MyAllowSpecificOrigins);
 app.UseAuthorization();
 
 app.Run();
