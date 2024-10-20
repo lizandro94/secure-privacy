@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
@@ -10,13 +10,14 @@ import { AccountService } from '@app/_services';
 @Component({
   standalone: true,
   templateUrl: 'login.component.html',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
 })
 export class LoginComponent implements OnInit {
   form!: FormGroup;
   loading = false;
   submitted = false;
   error?: string;
+  success?: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,6 +36,11 @@ export class LoginComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required],
     });
+
+    // show success message after registration
+    if (this.route.snapshot.queryParams.registered) {
+      this.success = 'Registration successful';
+    }
   }
 
   // convenience getter for easy access to form fields
@@ -47,6 +53,7 @@ export class LoginComponent implements OnInit {
 
     // reset alert on submit
     this.error = '';
+    this.success = '';
 
     // stop here if form is invalid
     if (this.form.invalid) {

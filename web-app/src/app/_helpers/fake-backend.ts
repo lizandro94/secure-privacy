@@ -7,29 +7,23 @@ import {
 import { Observable, of, throwError } from 'rxjs';
 import { delay, materialize, dematerialize } from 'rxjs/operators';
 
-let users = [
-  {
-    id: 1,
-    firstName: 'Jason',
-    lastName: 'Watmore',
-    username: 'test',
-    password: 'test',
-  },
-];
-
 export function fakeBackendProvider(
   request: HttpRequest<any>,
   next: HttpHandlerFn
 ): Observable<HttpEvent<unknown>> {
-  const { url, method, headers, body } = request;
-  console.log('test');
+  const { url, method, body } = request;
+
+  // array in local storage for registered users
+  const usersKey = 'angular-tutorial-users';
+  let users: any[] = JSON.parse(localStorage.getItem(usersKey)!) || [];
   return handleRoute();
 
   function handleRoute() {
-    console.log('test');
     switch (true) {
       case url.endsWith('/users/authenticate') && method === 'POST':
         return authenticate();
+      case url.endsWith('/users/register') && method === 'POST':
+        return register();
       default:
         // pass through any requests not handled above
         return next(request);
@@ -48,6 +42,19 @@ export function fakeBackendProvider(
       ...basicDetails(user),
       token: 'fake-jwt-token',
     });
+  }
+
+  function register() {
+    const user = body;
+
+    if (users.find((x) => x.username === user.username)) {
+      return error('Username "' + user.username + '" is already taken');
+    }
+
+    user.id = users.length ? Math.max(...users.map((x) => x.id)) + 1 : 1;
+    users.push(user);
+    localStorage.setItem(usersKey, JSON.stringify(users));
+    return ok();
   }
 
   // helper functions
