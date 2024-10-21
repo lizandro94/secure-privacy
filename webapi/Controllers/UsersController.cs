@@ -6,7 +6,7 @@ using webapi.Services;
 namespace webapi.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class UsersController(UserService service) : Controller
     {
@@ -18,11 +18,12 @@ namespace webapi.Controllers
         [HttpGet("{id:length(24)}")]
         public async Task<User?> GetUser(string id) => await service.GetUserAsync(id);
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> CreateUser(User user)
         {
             await service.CreateUserAsync(user);
-            return Ok(user);
+            return Ok();
         }
 
         [AllowAnonymous]
@@ -30,13 +31,13 @@ namespace webapi.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] User user)
         {
-            var token = await service.AuthenticateUserAsync(user.Email, user.Password);
+            var (token, loggedInuser) = await service.AuthenticateUserAsync(user.UserName, user.Password);
 
             if (token == null)
             {
                 return Unauthorized();
             }
-            return Ok(new { token, user });
+            return Ok(new { token, id = loggedInuser?.Id, firstName = loggedInuser?.FirstName });
         }
     }
 }

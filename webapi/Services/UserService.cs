@@ -26,10 +26,10 @@ namespace webapi.Services
 
         public async Task CreateUserAsync(User user) => await users.InsertOneAsync(user);
 
-        public async Task<string?> AuthenticateUserAsync(string email, string password)
+        public async Task<(string?, User?)> AuthenticateUserAsync(string username, string password)
         {
-            var user = await users.Find(user => user.Email == email && user.Password == password).FirstOrDefaultAsync();
-            if (user == null) return null;
+            var user = await users.Find(user => user.UserName == username && user.Password == password).FirstOrDefaultAsync();
+            if (user == null) return (null, null);
 
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -38,13 +38,14 @@ namespace webapi.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity([
-                    new(ClaimTypes.Email, email)
+                    new(ClaimTypes.NameIdentifier, user.Id ?? ""),
+                    new(ClaimTypes.Name, username)
                 ]),
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            return (tokenHandler.WriteToken(token), user);
         }
 
         public async Task CreateProduct(string userId, Product product)

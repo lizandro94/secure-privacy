@@ -6,7 +6,7 @@ using webapi.Services;
 namespace webapi.Controllers
 {
     //[Authorize]
-    [Route("api/users/{userId}/[controller]")]
+    [Route("users/{userId}/[controller]")]
     [ApiController]
     public class ProductsController(UserService service) : Controller
     {
