@@ -46,5 +46,13 @@ namespace webapi.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+
+        public async Task CreateProduct(string userId, Product product)
+        {
+            var filter = Builders<User>.Filter.Eq(u => u.Id, userId);
+            var update = Builders<User>.Update
+                .Push(user => user.Products, product);
+            var result = await users.UpdateOneAsync(filter, update);
+        }
     }
 }

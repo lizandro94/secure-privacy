@@ -12,5 +12,6 @@ namespace webapi.Models
         public required string Email { get; set; }
         [BsonElement("Password")]
         public required string Password { get; set; }
+        public List<Product>? Products { get; set; }
     }
 }
