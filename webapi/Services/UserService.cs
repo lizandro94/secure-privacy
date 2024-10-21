@@ -48,6 +48,12 @@ namespace webapi.Services
             return (tokenHandler.WriteToken(token), user);
         }
 
+        public async Task<List<Product>> GetProducts(string userId)
+        {
+            var user = await GetUserAsync(userId);
+            return user?.Products ?? [];
+        }
+
         public async Task CreateProduct(string userId, Product product)
         {
             var filter = Builders<User>.Filter.Eq(u => u.Id, userId);

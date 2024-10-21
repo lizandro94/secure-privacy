@@ -1,6 +1,27 @@
 <div class="p-4">
   <div class="container">
     <h1>Hi {{ user?.firstName }}!</h1>
-    <p>You're logged in with Angular!!</p>
+    <p>These are your products</p>
+    <h1>Products</h1>
+    <a routerLink="add" class="btn btn-sm btn-success mb-2">Add Product</a>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th style="width: 50%">Name</th>
+          <th style="width: 50%">Quantity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td>{{ product.name }}</td>
+          <td>{{ product.quantity }}</td>
+        </tr>
+        <tr *ngIf="!products">
+          <td colspan="4" class="text-center">
+            <span class="align-center">No products</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
