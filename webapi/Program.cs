@@ -11,6 +11,7 @@ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddControllers();
 builder.Services.AddSingleton<IDatabaseSettings>(db => db.GetRequiredService<IOptions<DatabaseSettings>>().Value);
 builder.Services.AddScoped<UserService>();
+builder.Services.AddDataProtection();
 
 builder.Services.AddCors(options =>
 {
