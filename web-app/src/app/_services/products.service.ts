@@ -20,4 +20,8 @@ export class ProductsService {
       `${environment.apiUrl}/users/${this.user?.id}/products`
     );
   }
+
+  create(product: Product) {
+    return this.http.post(`${environment.apiUrl}/users/${this.user?.id}/products`, product);
+  }
 }

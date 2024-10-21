@@ -1,9 +1,7 @@
 <div class="p-4">
   <div class="container">
-    <h1>Hi {{ user?.firstName }}!</h1>
-    <p>These are your products</p>
-    <h1>Products</h1>
-    <a routerLink="add" class="btn btn-sm btn-success mb-2">Add Product</a>
+    <h1>{{ user?.firstName }} Products</h1>
+    <a routerLink="products/add" class="btn btn-sm btn-success mb-2">Add Product</a>
     <table class="table table-striped">
       <thead>
         <tr>
