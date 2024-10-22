@@ -56,6 +56,25 @@
             </div>
           </div>
         </div>
+        <div class="mb-3">
+          <input
+            type="checkbox"
+            formControlName="terms"
+            class="form-check-input"
+            [ngClass]="{ 'is-invalid': submitted && f.terms.errors }"
+          />
+          <label class="form-label"
+            >&nbsp; I accept the terms and conditions</label
+          >
+          <div *ngIf="submitted && f.terms.errors" class="invalid-feedback">
+            <div *ngIf="f.terms.errors.required">
+              Terms acceptance is required
+            </div>
+            <div *ngIf="f.terms.errors.requiredTrue">
+              Terms acceptance is required
+            </div>
+          </div>
+        </div>
         <div>
           <button [disabled]="loading" class="btn btn-primary">
             <span
