@@ -52,6 +52,16 @@ Now you are ready to test the app on:
 
 > localhost:4200/
 
+Please click on "Register" to create your user, these are the app features:
+
+ - Register User
+ - Login
+ - Create products
+ - List products
+ - Get user details (Account page)
+ - Delete user account (Account page)
+ - Logout
+
 ## GDPR compliance measures
 Some of the measures you will find in the project:
 
