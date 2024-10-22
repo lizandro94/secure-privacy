@@ -26,6 +26,13 @@ namespace webapi.Controllers
             return Ok();
         }
 
+        [HttpDelete("{id:length(24)}")]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            await service.DeleteUserAsync(id);
+            return Ok();
+        }
+
         [AllowAnonymous]
         [Route("authenticate")]
         [HttpPost]
@@ -37,7 +44,14 @@ namespace webapi.Controllers
             {
                 return Unauthorized();
             }
-            return Ok(new { token, id = loggedInuser?.Id, firstName = loggedInuser?.FirstName });
+            return Ok(new
+            {
+                token,
+                id = loggedInuser?.Id,
+                firstName = loggedInuser?.FirstName,
+                lastName = loggedInuser?.LastName,
+                username = loggedInuser?.UserName
+            });
         }
     }
 }

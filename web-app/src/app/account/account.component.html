@@ -1,0 +1,24 @@
+<div class="container col-md-6 offset-md-3 mt-5">
+  <div class="card">
+    <h4 class="card-header">User Info</h4>
+    <div class="card-body">
+      <ul class="list-group">
+        <li class="list-group-item">Username: {{ user.username }}</li>
+        <li class="list-group-item">First Name: {{ user.firstName }}</li>
+        <li class="list-group-item">Last Name: {{ user.lastName }}</li>
+      </ul>
+      <hr />
+      <button
+        (click)="deleteUser(user.id)"
+        class="btn btn-sm btn-danger"
+        [disabled]="isDeleting"
+      >
+        <span
+          *ngIf="isDeleting"
+          class="spinner-border spinner-border-sm"
+        ></span>
+        <span *ngIf="!isDeleting">Delete My Account</span>
+      </button>
+    </div>
+  </div>
+</div>

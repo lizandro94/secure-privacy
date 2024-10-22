@@ -56,6 +56,13 @@ namespace webapi.Services
             return user;
         }
 
+
+        public async Task DeleteUserAsync(string id)
+        {
+            var filter = Builders<User>.Filter.Eq(u => u.Id, id);
+            var result = await users.DeleteOneAsync(filter);
+        }
+
         public async Task<(string?, User?)> AuthenticateUserAsync(string username, string password)
         {
             var user = await users.Find(user => user.UserName == username).FirstOrDefaultAsync();
@@ -92,7 +99,6 @@ namespace webapi.Services
                 .Push(user => user.Products, product);
             var result = await users.UpdateOneAsync(filter, update);
         }
-
 
     }
 }
